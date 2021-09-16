@@ -16,22 +16,22 @@ import Home from "./component/home.jsx";
 
 //render your react application
 
-// window.onload = () => {
-// 	let seconds = 0;
-// 	setInterval(() => {
-// 		ReactDOM.render(
-// 			<div>
-// 				<h1 className="m-5">Timer</h1>
-// 				<SecondsCounter seconds={seconds} />
-// 				<h1 className="m-5">Countdown Timer</h1>
-// 				<Countdown />
-// 			</div>,
-// 			document.querySelector("#app")
-// 		);
-// 		seconds++;
-// 	}, 1000);
-// };
+window.onload = () => {
+	let seconds = 0;
+	setInterval(() => {
+		ReactDOM.render(
+			<div>
+				<h1 className="m-5">Timer</h1>
+				<SecondsCounter seconds={seconds} />
+				<h1 className="m-5">Countdown Timer</h1>
+				<Countdown />
+			</div>,
+			document.querySelector("#app")
+		);
+		seconds++;
+	}, 1000);
+};
 
-ReactDOM.render(<Home />, document.querySelector("#app"));
+//ReactDOM.render(<Home />, document.querySelector("#app"));
 
 //105 - [(105 - (105%10))]/10 - [105-(105%100)/100]
