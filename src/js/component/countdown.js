@@ -1,19 +1,42 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import SecondsCounter from "./SecondsCounter";
 import Button from "./button";
 
-const Countdown = props => {
+const Countdown = () => {
 	const [seconds, setSeconds] = useState(0);
+	const [isActive, setIsActive] = useState(false);
 
-	let handleStartClick = () => {
-		document.querySelector("input").value = "";
-		setInterval(() => {
-			setSeconds(seconds - 1);
-			console.log(seconds);
-		}, 1000);
-	};
+	//let number = 2000;
+	useEffect(() => {
+		let interval = null;
+		if (isActive) {
+			interval = setInterval(() => {
+				if (seconds > 0) {
+					setSeconds(prevState => prevState - 1);
+				} else {
+					alert("time finished");
+					setIsActive(false);
+				}
+			}, 1000);
+		} else if (!isActive) {
+			clearInterval(interval);
+		}
+		return () => {
+			clearInterval(interval);
+		};
+	}, [isActive, seconds]);
+
+	// let handleCountDownTimer = () => {
+	// 	setInterval(() => {
+	// 		setSeconds(prevState => prevState - 1);
+	// 		//setSeconds(seconds - 1);
+	// 		//setSeconds(number--);
+	// 		//console.log(number);
+	// 	}, 1000);
+	// };
+
+	//e => setNumber(parseInt(e.target.value))
 
 	return (
 		<div>
@@ -22,22 +45,51 @@ const Countdown = props => {
 				type="text"
 				id="secondsCountDown"
 				placeholder="Enter seconds to countdown"
-				onChange={e => setSeconds(parseInt(e.target.value))}></input>
-			<Button
-				text="Start"
-				buttonClass="btn-success"
-				handleStartClick={handleStartClick}
-			/>
-			<Button text="Stop" buttonClass="btn-danger" />
-			<Button text="Resume" buttonClass="btn-primary" />
-			<Button text="Reset" buttonClass="btn-secondary" />
+				onChange={e =>
+					setSeconds(
+						e.target.value.length == 0
+							? ""
+							: parseInt(e.target.value)
+					)
+				}></input>
+			{!isActive && (
+				<button
+					type="button"
+					className="btn btn-success mx-2"
+					onClick={() => setIsActive(true)}>
+					Start
+				</button>
+			)}
+			{isActive && (
+				<button
+					type="button"
+					className="btn btn-danger mx-2"
+					onClick={() => setIsActive(false)}>
+					Stop
+				</button>
+			)}
+			{!isActive && (
+				<button
+					type="button"
+					className="btn btn-primary mx-2"
+					onClick={() => setIsActive(true)}>
+					Resume
+				</button>
+			)}
+			{!isActive && (
+				<button
+					type="button"
+					className="btn btn-secondary mx-2"
+					onClick={() => {
+						setIsActive(false);
+						setSeconds(0);
+					}}>
+					Reset
+				</button>
+			)}
 			<SecondsCounter seconds={seconds} />
 		</div>
 	);
-};
-
-Countdown.propTypes = {
-	seconds: PropTypes.number
 };
 
 export default Countdown;
